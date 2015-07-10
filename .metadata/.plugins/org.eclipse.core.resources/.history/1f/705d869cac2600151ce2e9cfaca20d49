@@ -1,13 +1,13 @@
 package assignment2;
 import java.util.Scanner;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 public class Assign {
 
+    	private static final String REGEX =
 		public static void main(String [] args)
 		{
 			//start
@@ -33,19 +33,12 @@ public class Assign {
 				}
 			}
 			//store players
-			bf = new BufferedReader(fl);
+			Bf = new BufferedReader(fl);
 			String [] list = new String[10];
 			for(int i=0; i<10;i++)
 			{
-				try
-				{
-				matcher = pattern.matcher(bf.readLine());				
+				matcher = fl.readLine();
 				list[i]=matcher.group(1);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println("IOException: " + ioe.getMessage());
-				}
 			}
 			for(int i=0; i<10;i++)
 			{
@@ -54,7 +47,7 @@ public class Assign {
 			//create class of players?
 			//store it in a 2d array;
 			//char [][] board = new char[][];
-			input.close();
+			
 		}
 }
 
