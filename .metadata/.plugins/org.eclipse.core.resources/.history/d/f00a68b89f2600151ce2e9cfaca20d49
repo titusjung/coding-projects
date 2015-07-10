@@ -9,14 +9,11 @@ public class Assign {
 			//start
 			//
 			Scanner input = new Scanner(System.in);
-			String filename;
+			System.out.print("Enter file Name: ");
+			String filename = input.nextLine();
 			while(true)
 			{
-				System.out.print("Enter file Name: ");
-				filename = input.nextLine();
 				try{
-					System.out.print(filename);
-
 					FileReader fl = new FileReader(filename);
 					break;
 				}
