@@ -57,7 +57,7 @@ public class Assign {
 					matcher = pattern.matcher(caught);
 					if(matcher.matches())
 						plist.add(new Player(matcher.group(1), Integer.parseInt(matcher.group(2))));
-					//else break;
+					else break;
 				}
 				catch(IOException ioe)
 				{
@@ -114,14 +114,5 @@ class Player implements Comparator<Player>, Comparable<Player>
 		return arg1.getScore()-arg0.getScore();
 	}
 }
-
-class Board
-{
-	private String [][] board = new String[10][10];
-	private boolean [][] check = new  boolean[10][10];
-	
-}
-
-
 
 

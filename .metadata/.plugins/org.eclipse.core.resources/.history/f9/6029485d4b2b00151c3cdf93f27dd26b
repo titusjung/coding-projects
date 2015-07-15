@@ -115,13 +115,4 @@ class Player implements Comparator<Player>, Comparable<Player>
 	}
 }
 
-class Board
-{
-	private String [][] board = new String[10][10];
-	private boolean [][] check = new  boolean[10][10];
-	
-}
-
-
-
 
