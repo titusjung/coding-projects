@@ -46,7 +46,7 @@ public class Assign {
 			{
 				System.out.println("IOException: " + ioe.getMessage());
 			}
-			List<Player> plist = new ArrayList();
+			List<Player> plist = new ArrayList<Player>();
 			String caught;
 			for(int i=0; i<10;i++)
 			{
@@ -73,6 +73,8 @@ public class Assign {
 			{
 				System.out.println(p.getName()+" "+p.getScore());
 			}
+			Board b = new Board(bf);
+			b.printboard();
 			//create class of players?
 			//store it in a 2d array;
 			//char [][] board = new char[][];
@@ -117,11 +119,86 @@ class Player implements Comparator<Player>, Comparable<Player>
 
 class Board
 {
-	private String [][] board = new String[10][10];
+	private String [] board = new String[10];
 	private boolean [][] check = new  boolean[10][10];
+	
+	public Board(BufferedReader bf)
+	{
+		for(int i=0; i<10;i++)
+		{
+			try
+			{
+				board[i]=bf.readLine();
+			}
+			catch(IOException ioe)
+			{
+				System.out.println("IOException: " + ioe.getMessage());
+			}			
+		}
+	}
+	public void printboard()
+	{
+		for(int i=0; i<10;i++)
+			System.out.println(board[i]);
+		
+	}
+	private void processboard()
+	{
+		//assigns ships
+		for(int i=0; i<10; i++)
+		{
+			for(int j=0; j<10;j++)
+			{
+				if(board[i].charAt(j) =='x')
+					
+			}
+		}
+	}
+	
+	public void checkboard(int x, int y)
+	{
+		
+	}
+	
+}
+class Position
+{
+	public int x;
+	public int y;
+	public Position(int a, int b)
+	{
+		x=a;
+		y=b;
+	}
+}
+abstract class ship
+{
+	public ship(int headx, int heady, int tailx, int taily)
+	{
+		if((headx != tailx && heady !=taily) || (heady==taily &&headx==tailx ))
+		{
+			return;
+		}
+		else if(headx == tailx)
+		{
+			int length = Math.abs(heady-taily);
+			for(int i=0; i<length; i++)
+			{
+				
+			}
+		}
+		
+	}
+	public void removelife(int x, int y){}
+	private int life;
+	private Position[] location;
 	
 }
 
+class ACship extends ship
+{
+	Position[]
+}
 
 
 
