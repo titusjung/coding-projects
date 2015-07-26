@@ -120,20 +120,39 @@ class Player implements Comparator<Player>, Comparable<Player>
 class Board
 {
 	private String [] board = new String[10];
+	private char [][] board2 = new char[10][10];
 	private boolean [][] check = new  boolean[10][10];
+	private boolean [][] accounted = new  boolean[10][10];
+	private ship ship1;
+	private ship ship2;
+	private int numA, numB, numC, numD;
+	private final int height = 10;
+	private final int length = 10;
+	
 	
 	public Board(BufferedReader bf)
 	{
-		for(int i=0; i<10;i++)
+		numA=0;
+		numB=0;
+		numC=0;
+		numD=0;
+		String buff;
+		for(int i=0; i<height;i++)
 		{
 			try
 			{
-				board[i]=bf.readLine();
+				buff = bf.readLine();
+				board[i]=buff;
+				for(int j=0; j<length; j++)
+				{
+					board2[i][j]=buff.charAt(j);
+				}
 			}
 			catch(IOException ioe)
 			{
 				System.out.println("IOException: " + ioe.getMessage());
-			}			
+			}
+
 		}
 	}
 	public void printboard()
@@ -145,11 +164,14 @@ class Board
 	private void processboard()
 	{
 		//assigns ships
-		for(int i=0; i<10; i++)
+		for(int i=0; i<height; i++)
 		{
-			for(int j=0; j<10;j++)
+			for(int j=0; j<length;j++)
 			{
-				if(board[i].charAt(j) =='x')
+				if(board[i].charAt(j) !='X')
+				{
+					
+				}
 					
 			}
 		}
@@ -159,21 +181,130 @@ class Board
 	{
 		
 	}
+	private boolean lookaheadcheck()
+	{
+		int num =0;
+		boolean invalid = false;
+		char shiplet;
+		boolean lookvertical = false;
+		for( int i =0; i<10; i++)
+		{
+			for(int j=0; j<10; j++)
+			{
+				if(board[i].charAt(j) != 'X' && (!accounted[i][j]))
+				{
+					shiplet = board[i].charAt(j);
+					switch( shiplet)
+					{
+					case 'a':
+						if(numA==0)
+							{
+								num =5;
+								numA++;
+							}
+					case 'b':
+						if(numB==0)
+						{ 
+							num =4;
+							numB++;
+						}
+					case 'c':
+						if(numC==0) 
+							{
+								num =3;
+								numC++;
+							}
+					case'd':
+						if(numD<2)
+							{
+								num = 2;
+								numD++;
+							}
+					}
+					
+					if(num==0) 
+						{
+							return false;
+						}
+					
+					//horizontal check
+					for(int k=0; k<num; k++)
+					{
+						if(j+k>=length) return false;
+						
+						if(board[i].charAt(j+k)!=shiplet && k==1)
+							lookvertical =true;
+						else
+						{
+							return false;
+						}
+					}
+
+					if(board[i].charAt(j+num+1) == shiplet && shiplet == 'D')
+					{
+						lookvertical = true;
+					}
+					
+					if(!lookvertical)
+					{
+						for(int k=0; k<num; k++)
+						{
+							accounted[i][j+k]=true;
+						}
+					}
+					
+					else
+					{
+						for(int k=0; k<num; k++)
+						{
+							if(i+k>=height) return false;
+							
+							if(board[i+k].charAt(j)!=shiplet) return false;
+						}
+						for(int k=0; k<num; k++)
+						{
+							accounted[i+k][j]= true;
+						}
+					}
+					
+				}
+				num =0;
+				
+				
+			}
+		}
+		return true;
+	}
 	
 }
 class Position
 {
 	public int x;
 	public int y;
+	public boolean hit;
 	public Position(int a, int b)
 	{
 		x=a;
 		y=b;
+		hit = false;
+	}
+	public boolean hitstatus()
+	{
+		return hit;
+	}
+	public void hitchange()
+	{
+		hit = true;
 	}
 }
 abstract class ship
 {
+	public ship(){}
 	public ship(int headx, int heady, int tailx, int taily)
+	{		
+	}
+	abstract public void removelife(int x, int y);
+	protected void shiphelper(int headx, int heady, int tailx, int taily)
 	{
 		if((headx != tailx && heady !=taily) || (heady==taily &&headx==tailx ))
 		{
@@ -182,22 +313,38 @@ abstract class ship
 		else if(headx == tailx)
 		{
 			int length = Math.abs(heady-taily);
+			if(length>life) return;
 			for(int i=0; i<length; i++)
 			{
-				
+				location[i] = new Position(headx, heady+i);
 			}
 		}
-		
+		else
+		{
+			int length = Math.abs(headx-tailx);
+			if(length>life) return;
+			for(int i=0; i<length; i++)
+			{
+				location[i] = new Position(headx+i, heady);
+			}
+		}
 	}
-	public void removelife(int x, int y){}
-	private int life;
-	private Position[] location;
+	
+	protected int life;
+	protected Position[] location;
+	protected boolean[][] array = new boolean[10][10];
 	
 }
 
 class ACship extends ship
 {
-	Position[]
+	public ACship(int headx, int heady, int tailx, int taily)
+	{
+		life = 5;
+		location = new Position[5];
+		array = new boolean[5][5];
+		shiphelper(headx,heady,tailx,taily);
+	}
 }
 
 
