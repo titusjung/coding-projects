@@ -123,11 +123,8 @@ class Board
 	private char [][] board2 = new char[10][10];
 	private boolean [][] check = new  boolean[10][10];
 	private boolean [][] accounted = new  boolean[10][10];
-	private ship aship;
-	private ship bship;
-	private ship cship;
-	private ship dship1;
-	private ship dship2;
+	private ship ship1;
+	private ship ship2;
 	private int numA, numB, numC, numD;
 	private final int height = 10;
 	private final int length = 10;
@@ -184,21 +181,6 @@ class Board
 	{
 		
 	}
-	private void createship(char ship, int headx, int heady, boolean vertical)
-	{
-		switch(ship)
-		{
-		case 'A':
-			aship = new ACship(headx, heady, vertical);
-		case 'B':
-			bship = new Bship(headx, heady, vertical);
-		case 'C':
-			cship = new Cship(headx, heady, vertical);
-		case'D':
-			dship = new Dship(headx, heady, vertical);
-		}
-		
-	}
 	private boolean lookaheadcheck()
 	{
 		int num =0;
@@ -214,25 +196,25 @@ class Board
 					shiplet = board[i].charAt(j);
 					switch( shiplet)
 					{
-					case 'A':
+					case 'a':
 						if(numA==0)
 							{
 								num =5;
 								numA++;
 							}
-					case 'B':
+					case 'b':
 						if(numB==0)
 						{ 
 							num =4;
 							numB++;
 						}
-					case 'C':
+					case 'c':
 						if(numC==0) 
 							{
 								num =3;
 								numC++;
 							}
-					case'D':
+					case'd':
 						if(numD<2)
 							{
 								num = 2;
@@ -335,13 +317,11 @@ abstract class ship
 		}
 		else if(headx == tailx)
 		{
-			location = new boolean[10][10];
-			for(int i=0; i<10; i++)
+			int length = Math.abs(heady-taily);
+			if(length>life) return;
+			for(int i=0; i<length; i++)
 			{
-				for(int j=0; j<10;j++)
-				{
-					location[i][j]=false;
-				}
+				location[i] = new Position(headx, heady+i);
 			}
 		}
 		else
@@ -356,41 +336,19 @@ abstract class ship
 	}
 	
 	protected int life;
-	private boolean [][] location; 
+	protected Position[] location;
 	protected boolean[][] array = new boolean[10][10];
 	
 }
 
 class ACship extends ship
 {
-	private boolean [][] location; 
-	public ACship(int headx, int heady, boolean vertical)
+	public ACship(int headx, int heady, int tailx, int taily)
 	{
 		life = 5;
-		location = new boolean[10][10];
-		for(int i=0; i<10; i++)
-		{
-			for(int j=0; j<10;j++)
-			{
-				location[i][j]=false;
-			}
-		}
-		if(vertical)
-		{
-			for(int i=0; i<life; i++)
-			{
-				location[i][heady]=true;
-			}
-			
-		}
-		else
-		{
-			for(int i=0; i<life; i++)
-			{
-				location[headx][i]=true;
-			}
-		}
-
+		location = new Position[5];
+		array = new boolean[5][5];
+		shiphelper(headx,heady,tailx,taily);
 	}
 }
 
