@@ -274,11 +274,8 @@ class Board
 						if(j+k>=length) return false;
 						
 						if((board[i].charAt(j+k)!=shiplet && k==1) && (!accounted[i][j+k]))
-							{
 							lookvertical =true;
-							break;
-							}
-						else if((board[i].charAt(j+k)!=shiplet) && (!accounted[i][j+k]))
+						else
 						{
 							return false;
 						}

@@ -144,7 +144,6 @@ class Board
 				for(int j=0; j<length; j++)
 				{
 					board2[i][j]=buff.charAt(j);
-					accounted[i][j]= false;
 				}
 			}
 			catch(IOException ioe)
@@ -152,10 +151,6 @@ class Board
 				System.out.println("IOException: " + ioe.getMessage());
 			}
 
-		}
-		if(!lookaheadcheck())
-		{
-			System.out.println("Invalid board");
 		}
 	}
 	public void printboard()
@@ -166,7 +161,7 @@ class Board
 	}
 
 	public String checkboard(int x, int y)
-	{
+	{//0 = out of range; 1 = no hit; 2 = hit; 3 = already guessed
 		if(x<height && y< height) 
 		{
 			switch( board2[x][y])
@@ -174,7 +169,7 @@ class Board
 			case 'X':
 				board2[x][y]= 'G';
 				return "Miss!";
-			case 'G':
+			case 'H':
 				return "Already Guessed";
 			case 'A':
 				board2[x][y]= 'G';
@@ -218,15 +213,34 @@ class Board
 			}
 		}
 	}
+	private void createship(char ship, int headx, int heady, boolean vertical)
+	{
+		switch(ship)
+		{
+		case 'A':
+			assignpos(headx, heady, 5, vertical, 'A');
+		case 'B':
+			assignpos(headx, heady, 4, vertical, 'B');
 
+		case 'C':
+			assignpos(headx, heady, 3, vertical, 'C');
+
+		case'D':
+			if(numD==0) assignpos(headx, heady, 5, vertical, 'D');
+			else assignpos(headx, heady, 2, vertical, 'E');
+
+		}
+		
+	}
 	private boolean lookaheadcheck()
 	{
 		int num =0;
+		boolean invalid = false;
 		char shiplet;
 		boolean lookvertical = false;
-		for( int i =0; i<height; i++)
+		for( int i =0; i<10; i++)
 		{
-			for(int j=0; j<length; j++)
+			for(int j=0; j<10; j++)
 			{
 				if(board[i].charAt(j) != 'X' && (!accounted[i][j]))
 				{
@@ -239,28 +253,24 @@ class Board
 								num =5;
 								numA++;
 							}
-						break;
 					case 'B':
 						if(numB==0)
 						{ 
 							num =4;
 							numB++;
 						}
-						break;
 					case 'C':
 						if(numC==0) 
 							{
 								num =3;
 								numC++;
 							}
-						break;
 					case'D':
 						if(numD<2)
 							{
 								num = 2;
 								numD++;
 							}
-						break;
 					}
 					
 					if(num==0) 
@@ -274,11 +284,8 @@ class Board
 						if(j+k>=length) return false;
 						
 						if((board[i].charAt(j+k)!=shiplet && k==1) && (!accounted[i][j+k]))
-							{
 							lookvertical =true;
-							break;
-							}
-						else if((board[i].charAt(j+k)!=shiplet) && (!accounted[i][j+k]))
+						else
 						{
 							return false;
 						}
@@ -300,7 +307,6 @@ class Board
 						{
 							accounted[i][j+k]=true;
 						}
-						assignpos(i,j,num,false,shiplet);
 					}
 					
 					else
@@ -315,12 +321,11 @@ class Board
 						{
 							accounted[i+k][j]= true;
 						}
-						assignpos(i,j,num,true,shiplet);
-					}					
+					}
+					
 				}
 				num =0;
-				lookvertical = false;
-
+				
 				
 			}
 		}
@@ -328,7 +333,6 @@ class Board
 	}
 	
 }
-/*
 class Position
 {
 	public int x;
@@ -422,7 +426,6 @@ class ACship extends ship
 
 	}
 }
-*/
 
 
 

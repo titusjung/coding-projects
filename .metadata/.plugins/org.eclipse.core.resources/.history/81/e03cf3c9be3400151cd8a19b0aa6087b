@@ -144,7 +144,6 @@ class Board
 				for(int j=0; j<length; j++)
 				{
 					board2[i][j]=buff.charAt(j);
-					accounted[i][j]= false;
 				}
 			}
 			catch(IOException ioe)
@@ -239,28 +238,24 @@ class Board
 								num =5;
 								numA++;
 							}
-						break;
 					case 'B':
 						if(numB==0)
 						{ 
 							num =4;
 							numB++;
 						}
-						break;
 					case 'C':
 						if(numC==0) 
 							{
 								num =3;
 								numC++;
 							}
-						break;
 					case'D':
 						if(numD<2)
 							{
 								num = 2;
 								numD++;
 							}
-						break;
 					}
 					
 					if(num==0) 
@@ -274,11 +269,8 @@ class Board
 						if(j+k>=length) return false;
 						
 						if((board[i].charAt(j+k)!=shiplet && k==1) && (!accounted[i][j+k]))
-							{
 							lookvertical =true;
-							break;
-							}
-						else if((board[i].charAt(j+k)!=shiplet) && (!accounted[i][j+k]))
+						else
 						{
 							return false;
 						}
