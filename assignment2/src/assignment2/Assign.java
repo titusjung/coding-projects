@@ -1,5 +1,18 @@
 package assignment2;
 import java.util.Comparator;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -10,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.lang.*;
 public class Assign {
 
 		public static void main(String [] args)
@@ -74,12 +88,136 @@ public class Assign {
 				System.out.println(p.getName()+" "+p.getScore());
 			}
 			Board b = new Board(bf);
-			b.printboard();
+			//b.printboard();
 			//create class of players?
 			//store it in a 2d array;
 			//char [][] board = new char[][];
+			
+			Game g = new Game(b, input);
+			g.playGame(input);
 			input.close();
+
+			
 		}
+}
+class Game extends JFrame
+{
+	Board gb;
+	private JButton[] jb;
+	private JPanel jp1, jp2;
+	private JPanel[] fpanel;
+	private JPanel[] spanel;
+	private JPanel [] outpanel;
+	private JLabel[] jl;
+	private JLabel[] jl2;
+	public Game(Board b, Scanner in)
+	{
+		super("Game GUI");
+		gb = b;
+		GameGUI();
+		
+	}
+	public void GameGUI()
+	{
+
+		setSize(600, 200);
+		setLocation(1000, 500);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		jb = new JButton[100];
+		outpanel = new JPanel[100];
+		fpanel = new JPanel[100];
+		spanel = new JPanel[100];
+		jp1 = new JPanel();
+		jp2 = new JPanel();
+		jl = new JLabel[21];
+		jl2 = new JLabel[100];
+		jp2.setLayout(new GridLayout(11, 11));
+		
+		for(int i=0; i<100; i++)
+		{	
+			if(i%10==0)
+				{
+				char label = (char) ('a'+i/10);
+				jl[i/10] = new JLabel(Character.toString(label));
+				jp2.add(jl[i/10]);
+				}
+
+				jb[i] = new JButton("?");
+				fpanel[i] = new JPanel();
+				fpanel[i].add(jb[i]);
+				
+				jl2[i] = new JLabel(gb.getShip(i/10, i%10));
+				spanel[i]= new JPanel();
+				spanel[i].add(jl2[i]);
+				
+				outpanel[i] = new JPanel();
+				outpanel[i].setLayout(new CardLayout());
+				
+				jb[i].addActionListener(new ButtonClicked("second", outpanel[i]));
+
+				outpanel[i].add(fpanel[i], "first");
+				outpanel[i].add(spanel[i], "second");
+				jp2.add(outpanel[i]);
+				
+		}
+		jp2.add(new JLabel(" "));
+		for(int i =0; i<10;i++)
+		{
+			jp2.add(new JLabel(Integer.toString(i)));
+		}
+		add(jp2, BorderLayout.WEST);
+		setVisible(true);
+	}
+	
+	public void updateGUI(int x, int y)
+	{
+		int i = x*10+y;
+		jb[i].setText(gb.getShip(x,y));		
+	}
+	
+	public void playGame(Scanner in)
+	{
+		int  y;
+		int x;
+		String bf;
+		Pattern p2 = Pattern.compile("([A-z])(\\d)");
+		Matcher m2;
+		while(gb.gamestatus())
+		{
+			System.out.println("Turn "+gb.gameturn()+": Please enter Coordinates");
+			bf = in.nextLine();
+			m2 = p2.matcher(bf);
+			if(m2.matches())
+			{
+				x = Character.toLowerCase(m2.group(1).charAt(0)) -'a';
+				y = Integer.parseInt(m2.group(2));
+				System.out.println(gb.checkboard(x, y));
+				updateGUI(x,y);
+			}
+			else
+			{
+				System.out.println("wrong code");
+			}
+		}
+	}
+}
+
+class ButtonClicked implements ActionListener
+{
+	private String numberString;
+	private JPanel JP;
+	public ButtonClicked(String numberString, JPanel jp)
+	{
+		this.numberString = numberString;
+		this.JP = jp;
+	}
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		CardLayout cl = (CardLayout)JP.getLayout();
+		cl.show(JP, numberString);
+	}
+	
 }
 
 class Player implements Comparator<Player>, Comparable<Player> 
@@ -121,12 +259,13 @@ class Board
 {
 	private String [] board = new String[10];
 	private char [][] board2 = new char[10][10];
+	private char [][] visboard = new char[10][10];
 	private boolean [][] accounted = new  boolean[10][10];
 	private int numA, numB, numC, numD;
 	private final int height = 10;
 	private final int length = 10;
 	private int alife, blife, clife, dlife1, dlife2;
-	
+	int turn;
 	
 	public Board(BufferedReader bf)
 	{
@@ -134,6 +273,7 @@ class Board
 		numB=0; blife =4;
 		numC=0; clife = 3;
 		numD=0; dlife1 = 2; dlife2 = 2;
+		turn =0;
 		String buff;
 		for(int i=0; i<height;i++)
 		{
@@ -144,6 +284,7 @@ class Board
 				for(int j=0; j<length; j++)
 				{
 					board2[i][j]=buff.charAt(j);
+					visboard[i][j]='?';
 					accounted[i][j]= false;
 				}
 			}
@@ -158,23 +299,38 @@ class Board
 			System.out.println("Invalid board");
 		}
 	}
+	public String getShip(int x, int y)
+	{
+		 return Character.toString(board2[x][y]);
+		
+	}
 	public void printboard()
 	{
 		for(int i=0; i<10;i++)
-			System.out.println(board[i]);
-		
+			System.out.println(board[i]);		
+	}
+	public Boolean gamestatus()
+	{
+		return !(alife==0 && blife == 0 && clife == 0 && dlife1==0 && dlife2==0);
+	}
+	public int gameturn()
+	{
+		return turn;
 	}
 
 	public String checkboard(int x, int y)
 	{
 		if(x<height && y< height) 
 		{
+			turn++;
 			switch( board2[x][y])
 			{
 			case 'X':
-				board2[x][y]= 'G';
+				visboard[x][y]= 'G';
+				board2[x][y]='G';
 				return "Miss!";
 			case 'G':
+				turn--;
 				return "Already Guessed";
 			case 'A':
 				board2[x][y]= 'G';
@@ -203,6 +359,7 @@ class Board
 				return "Hit Destroyer";								
 			}
 		}
+		turn--;
 		 return "Out of Range";
 	}
 	private void assignpos(int x, int y, int life, boolean vertical, char nship)
