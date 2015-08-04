@@ -62,12 +62,9 @@ class Fract
 	}
 	public void add(Fract x)
 	{
-		int d1 = this.denominator;
-		int d2 = x.denominator;
-		int cf = d1*d2;
-		this.denominator = cf;
-		this.numerator = d2*this.numerator;
-		this.numerator = x.numerator*d1 +this.numerator;
+		this.denominator = x.denominator * this.denominator;
+		this.numerator = x.denominator*this.numerator;
+		this.numerator = x.numerator +this.numerator;
 	}
 
 	public String print()

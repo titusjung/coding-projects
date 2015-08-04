@@ -12,18 +12,17 @@ public class fractions {
 		int x = input.nextInt();
 		String[] stor = new String[x];
 		Fract[] stor2 = new Fract[x];
-		Fract total = new Fract();
+		
 		input.nextLine();
-		String buf;
 		for(int i=0; i<x; i++)
 		{
-			buf = input.nextLine();
-			stor[i]=buf;
-			stor2[i]= new Fract(buf);
-			total.add(stor2[i]);
-			
+			stor[i]=input.nextLine();
+			stor2[i]= Fract(input.nextLine());
 		}
-		System.out.println(total.print());
+		
+		
+		
+		
 		input.close();
 	}
 
@@ -35,11 +34,7 @@ class Fract
 	public int denominator;
 	public int numerator;
 	public Boolean empty;
-	public Fract()
-	{
-		numerator = 0;
-		denominator = 1;
-	}
+
 	public Fract(String in)
 	{
 		matcher = pattern.matcher(in);
@@ -47,7 +42,7 @@ class Fract
 		{
 			
 			numerator= Integer.parseInt(matcher.group(1));
-			denominator = Integer.parseInt(matcher.group(2));
+			denominator = Integer.parseInt(matcher.group(1));
 			if(denominator!=0) empty = false;
 		}
 		else
@@ -60,16 +55,12 @@ class Fract
 		denominator = y;
 		numerator = x;
 	}
-	public void add(Fract x)
+	public Fract add(Fract x)
 	{
-		int d1 = this.denominator;
-		int d2 = x.denominator;
-		int cf = d1*d2;
-		this.denominator = cf;
-		this.numerator = d2*this.numerator;
-		this.numerator = x.numerator*d1 +this.numerator;
+		this.denominator = x.denominator * this.denominator;
+		this.numerator = x.denominator*this.numerator;
+		return new Fract(this.numerator+ x.numerator , this.denominator);
 	}
-
 	public String print()
 	{
 		return new String(numerator + "/" + denominator);
