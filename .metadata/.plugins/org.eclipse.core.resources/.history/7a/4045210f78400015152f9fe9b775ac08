@@ -1,0 +1,33 @@
+package gamego;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.lang.*;
+
+public class gamego {
+	Scanner input = new Scanner(System.in);
+	String filename;
+	FileReader fl;
+
+	while(true)
+	{
+		System.out.print("Enter file Name: ");
+		filename = input.nextLine();
+		try{
+			System.out.print(filename+ "\n");
+			fl = new FileReader(filename);
+			break;
+		}
+		catch(FileNotFoundException fnfe)
+		{
+			System.out.println("FileNotFoundException: " + fnfe.getMessage());
+		}
+	}
+}
+
+class Go
+{
+	
+}
