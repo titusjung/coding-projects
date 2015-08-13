@@ -55,7 +55,7 @@ class Go
 	private int height, length;
 	private char pcolor;
 	char [][] board;
-	private Boolean[][] visited;
+	private boolean [][] visited;
 	stonebody [][] board2;
 	Vector<stonebody> bodylist;
 	stonebody [] bodies;
@@ -67,7 +67,6 @@ class Go
 		board = new char[height][length];
 		board2 = new stonebody[height][length];
 		bodylist = new Vector<stonebody>();
-		visited = new Boolean[height][length];
 		stonebody.definemap(height, length, pcolor);
 		sc.nextLine();
 		pcolor = sc.nextLine().charAt(0);
@@ -87,7 +86,6 @@ class Go
 	{
 		
 	}
-	/*
 	public void helperParse(int i, int j)
 	{
 		int u = i-1;
@@ -101,7 +99,7 @@ class Go
 		}
 		
 	}
-	*/
+	
 	
 	public void Parse()
 	{

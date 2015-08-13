@@ -1,0 +1,84 @@
+package gamego;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.lang.*;
+
+public class gamego {
+
+		public static void main(String [] args)
+		{
+			Scanner input = new Scanner(System.in);
+			String filename;
+			FileReader fl;
+
+			while(true)
+			{
+				System.out.print("Enter file Name: ");
+				filename = input.nextLine();
+				try{
+					System.out.print(filename+ "\n");
+					fl = new FileReader(filename);
+					break;
+				}
+				catch(FileNotFoundException fnfe)
+				{
+					System.out.println("FileNotFoundException: " + fnfe.getMessage());
+				}
+			}
+			Go game = new Go(fl);
+			System.out.println(game.toString());
+			
+			
+			
+			
+			//end of program
+			input.close();
+			try{
+			fl.close();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("IOException" + e.getMessage());
+			}
+		}
+}
+
+class Go
+{
+	private int height, length;
+	char [][] board;
+	public Go(FileReader g)
+	{
+		Scanner sc = new Scanner(g);
+		length = sc.nextInt();
+		height = sc.nextInt();
+		board = new char[height][length];
+		sc.nextLine();
+		sc.nextLine();
+		for(int i=0; i<height; i++)
+		{
+			String buff = sc.nextLine();
+			for(int j=0; j<length; j++)
+			{
+				board[i][j] = buff.charAt(j);			
+			}
+		}
+		sc.close();
+	}
+	
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		for(char[] row:board)
+		{
+			sb.append(row);
+			sb.append("\n");
+		}
+		
+		return sb.toString();
+	}
+}

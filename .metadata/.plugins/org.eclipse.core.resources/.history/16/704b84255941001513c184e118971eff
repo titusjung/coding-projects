@@ -55,7 +55,7 @@ class Go
 	private int height, length;
 	private char pcolor;
 	char [][] board;
-	private Boolean[][] visited;
+	private boolean [][] visited;
 	stonebody [][] board2;
 	Vector<stonebody> bodylist;
 	stonebody [] bodies;

@@ -31,10 +31,8 @@ public class gamego {
 				}
 			}
 			Go game = new Go(fl);
-			game.Parse();
 			System.out.println(game.toString());
-			System.out.println(game.getBodies());
-
+			
 			
 			
 			
@@ -55,7 +53,6 @@ class Go
 	private int height, length;
 	private char pcolor;
 	char [][] board;
-	private Boolean[][] visited;
 	stonebody [][] board2;
 	Vector<stonebody> bodylist;
 	stonebody [] bodies;
@@ -67,8 +64,6 @@ class Go
 		board = new char[height][length];
 		board2 = new stonebody[height][length];
 		bodylist = new Vector<stonebody>();
-		visited = new Boolean[height][length];
-		stonebody.definemap(height, length, pcolor);
 		sc.nextLine();
 		pcolor = sc.nextLine().charAt(0);
 		for(int i=0; i<height; i++)
@@ -76,32 +71,11 @@ class Go
 			String buff = sc.nextLine();
 			for(int j=0; j<length; j++)
 			{
-				board[i][j] = buff.charAt(j);
-				visited[i][j]=false;
+				board[i][j] = buff.charAt(j);			
 			}
 		}
 		sc.close();
 	}
-	
-	public void recursiveParse()
-	{
-		
-	}
-	/*
-	public void helperParse(int i, int j)
-	{
-		int u = i-1;
-		int d = i+1;
-		int l = j-1;
-		int r = j+1;
-		visited[i][j] = true;		
-		if(u>=0 && board[u][j]==pcolor && (!visited[u][j]))
-		{
-			helperParse()
-		}
-		
-	}
-	*/
 	
 	public void Parse()
 	{
@@ -121,14 +95,12 @@ class Go
 						id = board2[i][btile];
 						id.add(i, j);
 						board2[i][j] = id;
-					//	if(board[i][btile]==' ') id.addlife(i, btile);
 					}
 					if(atile>= 0 && board[atile][j]==pcolor)
 					{
 						id = board2[atile][j];
 						id.add(i, j);
 						board2[i][j] = id;
-						//if(board[atile][j]==' ') id.addlife(atile, j);
 					}
 					else
 					{
@@ -161,48 +133,28 @@ class Go
 		
 		return sb.toString();
 	}
-	public String getBodies()
-	{
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<bodylist.size(); i++)
-		{
-			sb.append(bodylist.get(i).getMap());
-		}
-		
-		return sb.toString();
-	}
 }
 
 class stonebody
 {
 
-		char [][] map;
-		static int [][] targets;
+		char [][] map; 
 		Boolean [][] lives;
 		Boolean empty;
-		static char stone;
-		static int height, length;
+		char stone;
+		int height, length;
 		int life, tx, ty;
 		static int leastlives=1000;
-	public static void definemap(int x, int y, char z)
-	{
-		height = x;
-		length = y;
-		stone = z;
-		targets = new int[height][length];
-		for(int[] row:targets)
-		{
-			Arrays.fill(row, 0);
-		}
-	}
 
 	public stonebody(int i, int j, char z)
 	{
-
-		map = new char[height][length];
+		height = i;
+		length = j;
+		stone = z;
+		map = new char[i][j];
 		for(char[] row:map)
 		{
-			Arrays.fill(row, '?');
+			Arrays.fill(row, ' ');
 		}		
 		lives = new Boolean[height][length];
 		for(Boolean[] row:lives)
@@ -229,27 +181,5 @@ class stonebody
 			ty = y;
 		}
 		if(life<leastlives) leastlives = life;
-	}
-	public String getMap()
-	{
-		StringBuilder sb = new StringBuilder();
-		
-		for(char[] row:map)
-		{
-			sb.append(row);
-			sb.append("\n");
-		}
-		
-		return sb.toString();
-	}
-	
-	public String getLives()
-	{
-		StringBuilder sb = new StringBuilder();
-		for(Boolean[] row:lives)
-		{
-			sb.append(Arrays.toString(row)+"\n");
-		}
-		return sb.toString();
 	}
 }

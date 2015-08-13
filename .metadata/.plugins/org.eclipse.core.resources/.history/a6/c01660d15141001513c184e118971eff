@@ -1,0 +1,153 @@
+package gamego;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.lang.*;
+import java.sql.Array;
+
+public class gamego {
+
+		public static void main(String [] args)
+		{
+			Scanner input = new Scanner(System.in);
+			String filename;
+			FileReader fl;
+
+			while(true)
+			{
+				System.out.print("Enter file Name: ");
+				filename = input.nextLine();
+				try{
+					System.out.print(filename+ "\n");
+					fl = new FileReader(filename);
+					break;
+				}
+				catch(FileNotFoundException fnfe)
+				{
+					System.out.println("FileNotFoundException: " + fnfe.getMessage());
+				}
+			}
+			Go game = new Go(fl);
+			System.out.println(game.toString());
+			
+			
+			
+			
+			//end of program
+			input.close();
+			try{
+			fl.close();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("IOException" + e.getMessage());
+			}
+		}
+}
+
+class Go
+{
+	private int height, length;
+	private char pcolor;
+	char [][] board;
+	stonebody [][] board2;
+	public Go(FileReader g)
+	{
+		Scanner sc = new Scanner(g);
+		length = sc.nextInt();
+		height = sc.nextInt();
+		board = new char[height][length];
+		board2 = new stonebody[height][length];
+		sc.nextLine();
+		pcolor = sc.nextLine().charAt(0);
+		for(int i=0; i<height; i++)
+		{
+			String buff = sc.nextLine();
+			for(int j=0; j<length; j++)
+			{
+				board[i][j] = buff.charAt(j);			
+			}
+		}
+		sc.close();
+	}
+	
+	public void Parse()
+	{
+		int btile, atile;
+		stonebody id;
+		//Boolean discovery = false;
+		for(int i=0; i<height; i++)
+		{
+			for(int j=0; j<length; j++)
+			{
+				if(board[i][j]==pcolor)
+				{
+					btile = j-1;
+					atile = i-1;
+					if(atile>=0 && board[i][btile]==pcolor)
+					{
+						id = board2[i][btile];
+					}
+					else if(btile>=0&& board[atile][j]==pcolor)
+					{
+						
+					}
+					else
+					{
+						id = new stonebody(height,length);
+						board2[i][j] = id;
+					}
+				}
+				else if(board[i][j] == ' ')
+				{
+					
+				}
+			}
+		}
+	}
+	
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		for(char[] row:board)
+		{
+			sb.append(row);
+			sb.append("\n");
+		}
+		
+		return sb.toString();
+	}
+}
+
+class stonebody
+{
+
+		Boolean [][] map; 
+		Boolean empty;
+		int height, length;
+		int life;
+	public stonebody(int i, int j)
+	{
+		height = i;
+		length = j;
+		map = new Boolean[i][j];
+		for(Boolean[] row:map)
+		{
+			Arrays.fill(row, false);
+		}		
+		empty = true;
+		life =0;
+	}
+	public void add(int x, int y)
+	{
+		
+		
+	}
+	public void addlife()
+	{
+		
+	}
+}

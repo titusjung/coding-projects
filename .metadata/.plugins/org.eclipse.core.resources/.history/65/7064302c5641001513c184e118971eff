@@ -55,7 +55,6 @@ class Go
 	private int height, length;
 	private char pcolor;
 	char [][] board;
-	private Boolean[][] visited;
 	stonebody [][] board2;
 	Vector<stonebody> bodylist;
 	stonebody [] bodies;
@@ -67,7 +66,6 @@ class Go
 		board = new char[height][length];
 		board2 = new stonebody[height][length];
 		bodylist = new Vector<stonebody>();
-		visited = new Boolean[height][length];
 		stonebody.definemap(height, length, pcolor);
 		sc.nextLine();
 		pcolor = sc.nextLine().charAt(0);
@@ -76,32 +74,11 @@ class Go
 			String buff = sc.nextLine();
 			for(int j=0; j<length; j++)
 			{
-				board[i][j] = buff.charAt(j);
-				visited[i][j]=false;
+				board[i][j] = buff.charAt(j);			
 			}
 		}
 		sc.close();
 	}
-	
-	public void recursiveParse()
-	{
-		
-	}
-	/*
-	public void helperParse(int i, int j)
-	{
-		int u = i-1;
-		int d = i+1;
-		int l = j-1;
-		int r = j+1;
-		visited[i][j] = true;		
-		if(u>=0 && board[u][j]==pcolor && (!visited[u][j]))
-		{
-			helperParse()
-		}
-		
-	}
-	*/
 	
 	public void Parse()
 	{
@@ -121,14 +98,14 @@ class Go
 						id = board2[i][btile];
 						id.add(i, j);
 						board2[i][j] = id;
-					//	if(board[i][btile]==' ') id.addlife(i, btile);
+						if(board[i][btile]==' ') id.addlife(i, btile);
 					}
 					if(atile>= 0 && board[atile][j]==pcolor)
 					{
 						id = board2[atile][j];
 						id.add(i, j);
 						board2[i][j] = id;
-						//if(board[atile][j]==' ') id.addlife(atile, j);
+						if(board[atile][j]==' ') id.addlife(atile, j);
 					}
 					else
 					{
@@ -166,7 +143,7 @@ class Go
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<bodylist.size(); i++)
 		{
-			sb.append(bodylist.get(i).getMap());
+			sb.append(bodylist.get(i).getLives());
 		}
 		
 		return sb.toString();
@@ -248,7 +225,7 @@ class stonebody
 		StringBuilder sb = new StringBuilder();
 		for(Boolean[] row:lives)
 		{
-			sb.append(Arrays.toString(row)+"\n");
+			sb.append(Arrays.toString(row));
 		}
 		return sb.toString();
 	}
