@@ -99,12 +99,6 @@ class Go
 		{
 			helperParse()
 		}
-		//look up
-		 // look down
-		  * check if space or not
-		  * look right 
-		  * look left
-		  * 
 		
 	}
 	*/

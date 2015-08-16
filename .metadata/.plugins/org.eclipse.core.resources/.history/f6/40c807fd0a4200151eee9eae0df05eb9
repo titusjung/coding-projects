@@ -1,0 +1,33 @@
+package main;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+
+public class Chain1 {
+
+	public static void main(String [] args)
+	{
+		Scanner input = new Scanner(System.in);
+		String filename;
+		FileReader fl;
+
+		while(true)
+		{
+			System.out.print("Enter file Name: ");
+			filename = input.nextLine();
+			try{
+				System.out.print(filename+ "\n");
+				fl = new FileReader(filename);
+				break;
+			}
+			catch(FileNotFoundException fnfe)
+			{
+				System.out.println("FileNotFoundException: " + fnfe.getMessage());
+			}
+		}
+		
+		input.close();
+		
+	}
+}
