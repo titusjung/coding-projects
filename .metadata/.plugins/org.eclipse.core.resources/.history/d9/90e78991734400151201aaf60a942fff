@@ -1,0 +1,51 @@
+package wildfire;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+
+public class WFire {
+	private int numberofMaps;
+	private int [] heightofmaps;
+	private int [] lengthofmaps;
+	public int heightofMap(int id)
+	{
+		return heightofmaps[id];
+	}
+	public int lengthofMap(int id)
+	{
+		return lengthofmaps[id];
+	}
+	public int numberofMaps()
+	{
+		numberofMaps =2;
+		return numberofMaps;
+	}
+	public WFire()
+	{
+		{
+			Scanner input = new Scanner(System.in);
+			String filename;
+			FileReader fl;
+			while(true)
+			{
+				System.out.print("Enter file Name: ");
+				filename = input.next();
+				try{
+					fl = new FileReader(filename);
+					break;
+				}
+				catch(FileNotFoundException fnfe)
+				{
+					System.out.println("FileNotFoundException: " + fnfe.getMessage());
+				}
+			}
+			
+			
+			input.close();
+		}
+	}
+	
+	
+
+}

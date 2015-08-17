@@ -1,0 +1,30 @@
+package wildfire;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import junit.framework.Assert;
+
+public class TestCases {
+	WFire wf = new WFire();
+
+	@Test
+	public void test() {
+		assertNotNull(wf);
+	}
+	
+	public void test2()
+	{
+		assertEquals(2,wf.numberofMaps());
+	}
+	
+	public void testMapDim()
+	{
+		assertEquals(2,wf.heightofMap(1));
+		assertEquals(3,wf.lengthofMap(1));
+		assertEquals(6,wf.heightofMap(2));
+		assertEquals(8,wf.lengthofMap(2));
+	}
+
+}

@@ -1,0 +1,18 @@
+package wildfire;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import junit.framework.Assert;
+
+public class TestCases {
+
+	@Test
+	public void test() {
+		WFire wf = new WFire();
+
+		assertNotNull(wf);
+	}
+
+}
